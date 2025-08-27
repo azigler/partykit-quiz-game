@@ -1,0 +1,5 @@
+{
+  "name": "ai-vocab-quiz-game",
+  "main": "src/server.ts",
+  "compatibilityDate": "2025-08-27"
+}

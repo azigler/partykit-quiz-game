@@ -1,0 +1,22 @@
+{
+  "name": "partykit-quiz-game-backend",
+  "version": "1.0.0",
+  "description": "PartyKit backend for multiplayer quiz game",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "partykit dev",
+    "build": "partykit build",
+    "deploy": "partykit deploy",
+    "tail": "partykit tail"
+  },
+  "dependencies": {
+    "partykit": "beta"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

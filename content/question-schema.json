@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AI Vocabulary Quiz Question",
+  "type": "object",
+  "required": ["id", "question", "options", "correctAnswer", "category", "difficulty", "points"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the question"
+    },
+    "question": {
+      "type": "string",
+      "description": "The question text to display to players"
+    },
+    "options": {
+      "type": "array",
+      "description": "Array of multiple choice options",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 2,
+      "maxItems": 4
+    },
+    "correctAnswer": {
+      "type": "integer",
+      "description": "Index of the correct answer in the options array (0-based)",
+      "minimum": 0
+    },
+    "category": {
+      "type": "string",
+      "description": "Category or topic of the question",
+      "examples": ["AI Models", "Machine Learning", "AI Ethics", "AI History", "AI Applications"]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"],
+      "description": "Difficulty level of the question"
+    },
+    "points": {
+      "type": "integer",
+      "description": "Points awarded for correct answer",
+      "minimum": 1
+    },
+    "explanation": {
+      "type": "string",
+      "description": "Optional explanation of the correct answer"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Optional tags for categorization",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

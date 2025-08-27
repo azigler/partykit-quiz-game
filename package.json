@@ -1,0 +1,45 @@
+{
+  "name": "partykit-quiz-game",
+  "version": "1.0.0",
+  "description": "A multiplayer real-time quiz game built with PartyKit for group learning and icebreaker activities",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspaces",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "deploy": "npm run deploy --workspaces",
+    "deploy:backend": "npm run deploy --workspace=backend",
+    "deploy:frontend": "npm run deploy --workspace=frontend",
+    "clean": "npm run clean --workspaces --if-present && rm -rf node_modules",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "keywords": [
+    "partykit",
+    "quiz",
+    "multiplayer",
+    "real-time",
+    "game",
+    "svelte",
+    "websockets",
+    "cloudflare",
+    "lobby",
+    "icebreaker"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
