@@ -10,9 +10,13 @@ npm install          # Install all dependencies (backend + frontend)
 npm run dev          # Start both backend (PartyKit) and frontend (Vite) concurrently
 ```
 
-The development servers will be available at:
+**Development servers:**
 - Frontend: http://localhost:3000
 - Backend: http://localhost:1999
+
+**Production URLs:**
+- Frontend: https://partykit-quiz-game.pages.dev
+- Backend: https://ai-vocab-quiz-game.azigler.partykit.dev
 
 ### Individual Components
 ```bash
@@ -141,9 +145,9 @@ Questions follow a strict schema in `content/question-schema.json`:
 
 #### Development vs Production
 - **Development**: Backend connects to `127.0.0.1:1999` (local PartyKit)
-- **Production**: Backend connects to `your-partykit-app.your-username.partykit.dev`
+- **Production**: Backend connects to `ai-vocab-quiz-game.azigler.partykit.dev`
 
-Update the host configuration in `frontend/src/lib/stores/game.ts` for production deployments.
+The host configuration in `frontend/src/lib/stores/game.ts` automatically switches based on `import.meta.env.DEV`.
 
 #### PartyKit Configuration
 Backend configuration in `backend/partykit.json` specifies:

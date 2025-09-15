@@ -2,6 +2,15 @@
 
 A multiplayer, real-time quiz game built with PartyKit. Perfect as an icebreaker for group learning sessions or team building activities!
 
+## 🌐 **Play Now - Live Demo**
+
+**🎮 Try the game**: https://partykit-quiz-game.pages.dev
+
+**🔗 URLs:**
+- **Frontend**: https://partykit-quiz-game.pages.dev
+- **Backend API**: https://ai-vocab-quiz-game.azigler.partykit.dev
+- **GitHub**: https://github.com/azigler/partykit-quiz-game
+
 ## 🚀 Features
 
 - **Real-time Multiplayer**: Play with friends using PartyKit for seamless real-time communication
@@ -66,8 +75,10 @@ partykit-quiz-game/
    This starts both the backend (PartyKit) and frontend (Vite) servers concurrently.
 
 3. **Open the Game**
-   - Frontend: http://localhost:3000
-   - Backend: http://localhost:1999
+   - **Development Frontend**: http://localhost:3000
+   - **Development Backend**: http://localhost:1999
+   - **Production Frontend**: https://partykit-quiz-game.pages.dev
+   - **Production Backend**: https://ai-vocab-quiz-game.azigler.partykit.dev
 
 ### Individual Components
 
