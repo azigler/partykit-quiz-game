@@ -137,6 +137,30 @@ export default class QuizGameServer implements Party.Server {
     this.handlePlayerLeave(connection.id);
   }
 
+  // Handle HTTP requests with CORS
+  async onRequest(request: Party.Request): Promise<Response> {
+    // Handle CORS preflight requests
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        },
+      });
+    }
+
+    // Handle other HTTP requests
+    return new Response("PartyKit Quiz Game Server", {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "text/plain",
+      },
+    });
+  }
+
   private async loadQuizContent() {
     try {
       // In a real implementation, this would fetch from your content API/CDN

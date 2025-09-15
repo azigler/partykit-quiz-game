@@ -33,7 +33,7 @@
     "lobby",
     "icebreaker"
   ],
-  "author": "Your Name",
+  "author": "azigler",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
