@@ -163,55 +163,189 @@ export default class QuizGameServer implements Party.Server {
 
   private async loadQuizContent() {
     try {
-      // In a real implementation, this would fetch from your content API/CDN
-      // For now, we'll use some sample questions
-      this.gameState.questions = [
-        {
-          id: "1",
-          question: "What does 'GPT' stand for in GPT-4?",
-          options: [
-            "General Purpose Technology",
-            "Generative Pre-trained Transformer", 
-            "Global Processing Tool",
-            "Graphical Programming Terminal"
-          ],
-          correctAnswer: 1,
-          category: "AI Models",
-          difficulty: "medium",
-          points: 10
-        },
-        {
-          id: "2", 
-          question: "What is a 'hallucination' in the context of AI?",
-          options: [
-            "When AI generates false or nonsensical information",
-            "A type of neural network architecture",
-            "The process of training AI models",
-            "A method for improving AI accuracy"
-          ],
-          correctAnswer: 0,
-          category: "AI Concepts",
-          difficulty: "easy",
-          points: 5
-        },
-        {
-          id: "3",
-          question: "What does 'RAG' stand for in AI systems?",
-          options: [
-            "Rapid Algorithm Generation",
-            "Retrieval-Augmented Generation",
-            "Random Access Gateway",
-            "Recursive Attention Graph"
-          ],
-          correctAnswer: 1,
-          category: "AI Architecture",
-          difficulty: "hard",
-          points: 15
-        }
-      ];
+      // Load quiz content from the JSON file
+      const response = await fetch('https://raw.githubusercontent.com/azigler/partykit-quiz-game/main/content/ai-gtm-quiz.json');
+      const quizData = await response.json();
+      this.gameState.questions = quizData.questions;
     } catch (error) {
-      console.error("Error loading quiz content:", error);
+      console.error("Error loading quiz content from file:", error);
+      // Fallback to default questions if file loading fails
+      this.gameState.questions = await this.getDefaultQuestions();
     }
+  }
+
+  private async getDefaultQuestions(): Promise<Question[]> {
+    // LinearB-focused questions for engineering managers
+    return [
+      {
+        id: "em-001",
+        question: "What is the most important metric to track when measuring AI coding tool adoption?",
+        options: [
+          "Number of developers who have installed the tool",
+          "Percentage of code commits that used AI assistance",
+          "Total time saved per developer per day",
+          "Lines of AI-generated code accepted"
+        ],
+        correctAnswer: 2,
+        category: "AI Measurement",
+        difficulty: "easy",
+        points: 5
+      },
+      {
+        id: "em-002",
+        question: "According to DORA metrics, what defines 'elite' deployment frequency?",
+        options: [
+          "Multiple times per day",
+          "Once per day",
+          "Once per week",
+          "Once per month"
+        ],
+        correctAnswer: 0,
+        category: "DevOps Metrics",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "em-003",
+        question: "When implementing AI coding assistants, what's the biggest productivity risk?",
+        options: [
+          "Developers becoming too dependent on AI",
+          "Security vulnerabilities in generated code",
+          "Inconsistent code quality across the team",
+          "Increased code review time"
+        ],
+        correctAnswer: 1,
+        category: "Team Management",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "em-004",
+        question: "What's the best way to measure ROI of AI coding tools for your engineering team?",
+        options: [
+          "Track story points completed per sprint",
+          "Measure cycle time from code commit to production",
+          "Count lines of code written per developer",
+          "Monitor developer satisfaction scores"
+        ],
+        correctAnswer: 1,
+        category: "ROI Measurement",
+        difficulty: "hard",
+        points: 15
+      },
+      {
+        id: "em-005",
+        question: "Which DORA metric is most likely to improve first when introducing AI coding assistants?",
+        options: [
+          "Deployment frequency",
+          "Lead time for changes",
+          "Mean time to recovery",
+          "Change failure rate"
+        ],
+        correctAnswer: 1,
+        category: "AI Impact",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "em-006",
+        question: "What percentage of developers typically achieve measurable productivity gains from AI coding tools?",
+        options: [
+          "30-40%",
+          "50-60%",
+          "70-80%",
+          "90%+"
+        ],
+        correctAnswer: 2,
+        category: "Industry Benchmarks",
+        difficulty: "easy",
+        points: 5
+      },
+      {
+        id: "em-007",
+        question: "When rolling out AI tools, what's the most effective adoption strategy?",
+        options: [
+          "Mandate usage across all teams immediately",
+          "Start with senior developers as early adopters",
+          "Begin with junior developers to accelerate learning",
+          "Let teams decide individually when to adopt"
+        ],
+        correctAnswer: 1,
+        category: "Change Management",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "em-008",
+        question: "What's a key indicator that AI tools are improving your team's code quality?",
+        options: [
+          "Fewer bugs found in production",
+          "More consistent coding patterns across the team",
+          "Reduced time spent in code review",
+          "Higher test coverage percentages"
+        ],
+        correctAnswer: 0,
+        category: "Quality Metrics",
+        difficulty: "hard",
+        points: 15
+      },
+      {
+        id: "em-009",
+        question: "Which developer experience metric is most correlated with team productivity?",
+        options: [
+          "Build success rate",
+          "Time spent waiting for CI/CD pipelines",
+          "Number of context switches per day",
+          "Code review turnaround time"
+        ],
+        correctAnswer: 2,
+        category: "Developer Experience",
+        difficulty: "hard",
+        points: 15
+      },
+      {
+        id: "em-010",
+        question: "What's the recommended approach for measuring AI tool impact on sprint velocity?",
+        options: [
+          "Compare story points before and after AI adoption",
+          "Track actual time to complete similar tasks",
+          "Monitor team confidence in estimates",
+          "Measure features delivered per sprint"
+        ],
+        correctAnswer: 1,
+        category: "Sprint Analytics",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "em-011",
+        question: "What's the biggest challenge engineering managers face with AI tool adoption?",
+        options: [
+          "Getting budget approval for new tools",
+          "Training developers on how to use AI effectively",
+          "Measuring actual productivity improvement vs. perceived benefits",
+          "Integrating AI tools with existing development workflows"
+        ],
+        correctAnswer: 2,
+        category: "Management Challenges",
+        difficulty: "easy",
+        points: 5
+      },
+      {
+        id: "em-012",
+        question: "Which metric best indicates healthy AI tool adoption across your engineering team?",
+        options: [
+          "100% of developers have the tool installed",
+          "AI-generated code makes up 40%+ of commits",
+          "Consistent usage patterns across all experience levels",
+          "Zero reported issues with AI-generated code"
+        ],
+        correctAnswer: 2,
+        category: "Adoption Health",
+        difficulty: "medium",
+        points: 10
+      }
+    ];
   }
 
   private handlePlayerJoin(connection: Party.Connection, name: string) {
