@@ -130,7 +130,7 @@
   .game-screen {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     padding: 1rem;
@@ -291,14 +291,42 @@
   }
 
   @media (max-width: 768px) {
+    .game-screen {
+      padding: 0.5rem;
+      min-height: 100vh;
+      height: auto;
+      overflow-y: auto;
+    }
+    
     .game-header {
       flex-direction: column;
       gap: 1rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 10;
     }
     
     .game-progress {
       flex-direction: column;
       gap: 0.5rem;
+    }
+    
+    .game-content {
+      gap: 0.5rem;
+      display: block;
+      flex: none;
+      min-height: auto;
+    }
+    
+    .main-area {
+      align-items: flex-start;
+      padding-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .sidebar {
+      position: relative;
+      z-index: 5;
     }
   }
 </style>

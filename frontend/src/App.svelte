@@ -83,11 +83,24 @@
 </main>
 
 <style>
+  :global(body) {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  :global(html) {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    min-height: 100%;
+  }
+  
   .game-container {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
-    overflow: hidden;
   }
 
   .connecting {

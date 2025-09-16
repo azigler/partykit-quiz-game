@@ -83,7 +83,14 @@ export const gameActions = {
 
     // In development, connect to local PartyKit server
     // In production, this would be your deployed PartyKit URL
-    const host = import.meta.env.DEV ? '127.0.0.1:1999' : 'ai-vocab-quiz-game.azigler.partykit.dev';
+    let host: string;
+    if (import.meta.env.DEV) {
+      // Use the same hostname as the frontend but port 1999 for the backend
+      const currentHostname = window.location.hostname;
+      host = `${currentHostname}:1999`;
+    } else {
+      host = 'ai-vocab-quiz-game.azigler.partykit.dev';
+    }
     
     socket = new PartySocket({
       host,

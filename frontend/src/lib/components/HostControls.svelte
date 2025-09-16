@@ -147,20 +147,47 @@
     .host-controls {
       top: 10px;
       right: 10px;
+      z-index: 1100;
     }
 
     .reset-button {
       padding: 8px 12px;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .confirm-dialog {
-      margin: 10px;
+      margin: 15px;
       padding: 20px;
+      max-width: calc(100vw - 30px);
+    }
+
+    .confirm-dialog h3 {
+      font-size: 18px;
+    }
+
+    .confirm-dialog p {
+      font-size: 14px;
     }
 
     .confirm-buttons {
       flex-direction: column;
+    }
+    
+    .confirm-yes,
+    .confirm-no {
+      padding: 12px 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .reset-button {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+    
+    .confirm-dialog {
+      margin: 10px;
+      padding: 15px;
     }
   }
 </style>
