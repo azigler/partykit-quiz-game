@@ -169,7 +169,7 @@ export default class QuizGameServer implements Party.Server {
 
   private async loadQuizContent() {
     try {
-      // Load LinearB AI Measurement Framework questions directly
+      // Load LinearB GTM quiz questions from JSON file
       this.gameState.questions = await this.getLinearBQuestions();
     } catch (error) {
       console.error("Error loading quiz content:", error);
@@ -179,177 +179,29 @@ export default class QuizGameServer implements Party.Server {
   }
 
   private async getLinearBQuestions(): Promise<Question[]> {
-    // LinearB AI Measurement Framework questions based on their sales deck
-    return [
-      {
-        id: "lb-001",
-        question: "According to LinearB's philosophy, what are the 'true signals' for measuring AI effectiveness?",
-        options: [
-          "Lines of code generated and time saved",
-          "Throughput and quality",
-          "Developer satisfaction and tool adoption rates",
-          "Cost reduction and velocity improvements"
-        ],
-        correctAnswer: 1,
-        category: "Philosophy",
-        difficulty: "easy",
-        points: 5
-      },
-      {
-        id: "lb-002",
-        question: "LinearB defines AI ROI as which of the following?",
-        options: [
-          "Time saved in hours multiplied by developer salary costs",
-          "Features shipped, bugs avoided, and developer energy focused on high-leverage work",
-          "Lines of code generated per developer per sprint",
-          "Reduced hiring needs due to increased productivity"
-        ],
-        correctAnswer: 1,
-        category: "ROI Definition",
-        difficulty: "easy",
-        points: 5
-      },
-      {
-        id: "lb-003",
-        question: "How does LinearB recommend thinking about AI adoption in your organization?",
-        options: [
-          "Count headcount of developers using AI tools",
-          "Focus on mindsets across a spectrum from skeptical to embracing",
-          "Measure percentage of code commits using AI",
-          "Track monthly active users of AI tools"
-        ],
-        correctAnswer: 1,
-        category: "Adoption Strategy",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "lb-004",
-        question: "What does LinearB identify as the 'starting line' versus 'finish line' of AI adoption maturity?",
-        options: [
-          "Junior developers vs Senior developers using AI",
-          "Low context, iterating on outputs vs High context, iterating on inputs",
-          "Individual adoption vs Team-wide adoption",
-          "Basic code completion vs Advanced code generation"
-        ],
-        correctAnswer: 1,
-        category: "Maturity Model",
-        difficulty: "hard",
-        points: 15
-      },
-      {
-        id: "lb-005",
-        question: "Which metric does LinearB use to measure how refined a pull request is when initially submitted?",
-        options: [
-          "Code coverage percentage",
-          "PR Maturity",
-          "Review turnaround time",
-          "Lines of code changed"
-        ],
-        correctAnswer: 1,
-        category: "Quality Metrics",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "lb-006",
-        question: "LinearB's 'Rework Rate' metric specifically measures what?",
-        options: [
-          "How often developers reject AI suggestions",
-          "Changes to code modified within the last 21 days",
-          "Time spent refactoring legacy code",
-          "Percentage of PRs requiring multiple review cycles"
-        ],
-        correctAnswer: 1,
-        category: "Quality Metrics",
-        difficulty: "hard",
-        points: 15
-      },
-      {
-        id: "lb-007",
-        question: "What is LinearB's unique differentiator for tracking AI-generated code?",
-        options: [
-          "Integration with all major AI coding tools",
-          "Using gitStream to label AI-generated PRs at the source",
-          "Real-time monitoring of developer productivity",
-          "Automated surveys sent to developers"
-        ],
-        correctAnswer: 1,
-        category: "Technical Approach",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "lb-008",
-        question: "According to LinearB's framework, why is 'throughput alone ≠ value'?",
-        options: [
-          "Because faster development often leads to more bugs",
-          "Because business impact isn't always correlated with code volume",
-          "Because developers need work-life balance",
-          "Because leadership prefers predictable delivery schedules"
-        ],
-        correctAnswer: 1,
-        category: "Philosophy",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "lb-009",
-        question: "What does LinearB recommend as the best methodology for measuring AI impact?",
-        options: [
-          "Before-and-after comparisons of team velocity",
-          "Using gitStream to label and compare AI vs non-AI PRs",
-          "Tracking story points completed per developer",
-          "Measuring daily active users of AI tools"
-        ],
-        correctAnswer: 1,
-        category: "Methodology",
-        difficulty: "hard",
-        points: 15
-      },
-      {
-        id: "lb-010",
-        question: "LinearB's framework combines quantitative data with qualitative insights. What's a key qualitative method?",
-        options: [
-          "Code quality automated analysis",
-          "Developer surveys sent through Slack/Teams",
-          "Automated PR review comments",
-          "API data from AI tool providers"
-        ],
-        correctAnswer: 1,
-        category: "Data Collection",
-        difficulty: "easy",
-        points: 5
-      },
-      {
-        id: "lb-011",
-        question: "When presenting AI effectiveness to leadership, LinearB recommends focusing on:",
-        options: [
-          "Time saved metrics and cost reduction spreadsheets",
-          "Product momentum through features and quality",
-          "Developer satisfaction scores and retention rates",
-          "Technical metrics like code coverage and complexity"
-        ],
-        correctAnswer: 1,
-        category: "Leadership Communication",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "lb-012",
-        question: "According to LinearB, what characterizes the difference between junior and senior developer AI usage?",
-        options: [
-          "Seniors use more advanced AI tools than juniors",
-          "Juniors iterate on outputs, seniors iterate on inputs",
-          "Seniors are more skeptical of AI assistance",
-          "Juniors generate more lines of code with AI"
-        ],
-        correctAnswer: 1,
-        category: "Developer Maturity",
-        difficulty: "hard",
-        points: 15
+    try {
+      // Load questions from LinearB GTM quiz JSON file
+      const response = await fetch('https://raw.githubusercontent.com/azigler/partykit-quiz-game/main/content/linearb-gtm-quiz.json');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch quiz: ${response.status}`);
       }
-    ];
+      
+      const quizData = await response.json();
+      
+      // Transform the JSON structure to match our Question interface
+      return quizData.questions.map((q: any) => ({
+        id: q.id,
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        category: q.category,
+        difficulty: q.difficulty,
+        points: q.points
+      }));
+    } catch (error) {
+      console.error('Error loading LinearB GTM quiz:', error);
+      throw error; // Re-throw to trigger fallback
+    }
   }
 
   private async getDefaultQuestions(): Promise<Question[]> {
