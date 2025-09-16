@@ -163,187 +163,205 @@ export default class QuizGameServer implements Party.Server {
 
   private async loadQuizContent() {
     try {
-      // Load quiz content from the JSON file
-      const response = await fetch('https://raw.githubusercontent.com/azigler/partykit-quiz-game/main/content/ai-gtm-quiz.json');
-      const quizData = await response.json();
-      this.gameState.questions = quizData.questions;
+      // Load LinearB AI Measurement Framework questions directly
+      this.gameState.questions = await this.getLinearBQuestions();
     } catch (error) {
-      console.error("Error loading quiz content from file:", error);
-      // Fallback to default questions if file loading fails
+      console.error("Error loading quiz content:", error);
+      // Fallback to basic questions if something goes wrong
       this.gameState.questions = await this.getDefaultQuestions();
     }
   }
 
-  private async getDefaultQuestions(): Promise<Question[]> {
-    // LinearB-focused questions for engineering managers
+  private async getLinearBQuestions(): Promise<Question[]> {
+    // LinearB AI Measurement Framework questions based on their sales deck
     return [
       {
-        id: "em-001",
-        question: "What is the most important metric to track when measuring AI coding tool adoption?",
+        id: "lb-001",
+        question: "According to LinearB's philosophy, what are the 'true signals' for measuring AI effectiveness?",
         options: [
-          "Number of developers who have installed the tool",
-          "Percentage of code commits that used AI assistance",
-          "Total time saved per developer per day",
-          "Lines of AI-generated code accepted"
+          "Lines of code generated and time saved",
+          "Throughput and quality",
+          "Developer satisfaction and tool adoption rates",
+          "Cost reduction and velocity improvements"
         ],
-        correctAnswer: 2,
-        category: "AI Measurement",
+        correctAnswer: 1,
+        category: "Philosophy",
         difficulty: "easy",
         points: 5
       },
       {
-        id: "em-002",
-        question: "According to DORA metrics, what defines 'elite' deployment frequency?",
+        id: "lb-002",
+        question: "LinearB defines AI ROI as which of the following?",
         options: [
-          "Multiple times per day",
-          "Once per day",
-          "Once per week",
-          "Once per month"
+          "Time saved in hours multiplied by developer salary costs",
+          "Features shipped, bugs avoided, and developer energy focused on high-leverage work",
+          "Lines of code generated per developer per sprint",
+          "Reduced hiring needs due to increased productivity"
         ],
-        correctAnswer: 0,
-        category: "DevOps Metrics",
+        correctAnswer: 1,
+        category: "ROI Definition",
+        difficulty: "easy",
+        points: 5
+      },
+      {
+        id: "lb-003",
+        question: "How does LinearB recommend thinking about AI adoption in your organization?",
+        options: [
+          "Count headcount of developers using AI tools",
+          "Focus on mindsets across a spectrum from skeptical to embracing",
+          "Measure percentage of code commits using AI",
+          "Track monthly active users of AI tools"
+        ],
+        correctAnswer: 1,
+        category: "Adoption Strategy",
         difficulty: "medium",
         points: 10
       },
       {
-        id: "em-003",
-        question: "When implementing AI coding assistants, what's the biggest productivity risk?",
+        id: "lb-004",
+        question: "What does LinearB identify as the 'starting line' versus 'finish line' of AI adoption maturity?",
         options: [
-          "Developers becoming too dependent on AI",
-          "Security vulnerabilities in generated code",
-          "Inconsistent code quality across the team",
-          "Increased code review time"
+          "Junior developers vs Senior developers using AI",
+          "Low context, iterating on outputs vs High context, iterating on inputs",
+          "Individual adoption vs Team-wide adoption",
+          "Basic code completion vs Advanced code generation"
         ],
         correctAnswer: 1,
-        category: "Team Management",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "em-004",
-        question: "What's the best way to measure ROI of AI coding tools for your engineering team?",
-        options: [
-          "Track story points completed per sprint",
-          "Measure cycle time from code commit to production",
-          "Count lines of code written per developer",
-          "Monitor developer satisfaction scores"
-        ],
-        correctAnswer: 1,
-        category: "ROI Measurement",
+        category: "Maturity Model",
         difficulty: "hard",
         points: 15
       },
       {
-        id: "em-005",
-        question: "Which DORA metric is most likely to improve first when introducing AI coding assistants?",
+        id: "lb-005",
+        question: "Which metric does LinearB use to measure how refined a pull request is when initially submitted?",
         options: [
-          "Deployment frequency",
-          "Lead time for changes",
-          "Mean time to recovery",
-          "Change failure rate"
+          "Code coverage percentage",
+          "PR Maturity",
+          "Review turnaround time",
+          "Lines of code changed"
         ],
         correctAnswer: 1,
-        category: "AI Impact",
+        category: "Quality Metrics",
         difficulty: "medium",
         points: 10
       },
       {
-        id: "em-006",
-        question: "What percentage of developers typically achieve measurable productivity gains from AI coding tools?",
+        id: "lb-006",
+        question: "LinearB's 'Rework Rate' metric specifically measures what?",
         options: [
-          "30-40%",
-          "50-60%",
-          "70-80%",
-          "90%+"
-        ],
-        correctAnswer: 2,
-        category: "Industry Benchmarks",
-        difficulty: "easy",
-        points: 5
-      },
-      {
-        id: "em-007",
-        question: "When rolling out AI tools, what's the most effective adoption strategy?",
-        options: [
-          "Mandate usage across all teams immediately",
-          "Start with senior developers as early adopters",
-          "Begin with junior developers to accelerate learning",
-          "Let teams decide individually when to adopt"
+          "How often developers reject AI suggestions",
+          "Changes to code modified within the last 21 days",
+          "Time spent refactoring legacy code",
+          "Percentage of PRs requiring multiple review cycles"
         ],
         correctAnswer: 1,
-        category: "Change Management",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "em-008",
-        question: "What's a key indicator that AI tools are improving your team's code quality?",
-        options: [
-          "Fewer bugs found in production",
-          "More consistent coding patterns across the team",
-          "Reduced time spent in code review",
-          "Higher test coverage percentages"
-        ],
-        correctAnswer: 0,
         category: "Quality Metrics",
         difficulty: "hard",
         points: 15
       },
       {
-        id: "em-009",
-        question: "Which developer experience metric is most correlated with team productivity?",
+        id: "lb-007",
+        question: "What is LinearB's unique differentiator for tracking AI-generated code?",
         options: [
-          "Build success rate",
-          "Time spent waiting for CI/CD pipelines",
-          "Number of context switches per day",
-          "Code review turnaround time"
+          "Integration with all major AI coding tools",
+          "Using gitStream to label AI-generated PRs at the source",
+          "Real-time monitoring of developer productivity",
+          "Automated surveys sent to developers"
         ],
-        correctAnswer: 2,
-        category: "Developer Experience",
+        correctAnswer: 1,
+        category: "Technical Approach",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "lb-008",
+        question: "According to LinearB's framework, why is 'throughput alone ≠ value'?",
+        options: [
+          "Because faster development often leads to more bugs",
+          "Because business impact isn't always correlated with code volume",
+          "Because developers need work-life balance",
+          "Because leadership prefers predictable delivery schedules"
+        ],
+        correctAnswer: 1,
+        category: "Philosophy",
+        difficulty: "medium",
+        points: 10
+      },
+      {
+        id: "lb-009",
+        question: "What does LinearB recommend as the best methodology for measuring AI impact?",
+        options: [
+          "Before-and-after comparisons of team velocity",
+          "Using gitStream to label and compare AI vs non-AI PRs",
+          "Tracking story points completed per developer",
+          "Measuring daily active users of AI tools"
+        ],
+        correctAnswer: 1,
+        category: "Methodology",
         difficulty: "hard",
         points: 15
       },
       {
-        id: "em-010",
-        question: "What's the recommended approach for measuring AI tool impact on sprint velocity?",
+        id: "lb-010",
+        question: "LinearB's framework combines quantitative data with qualitative insights. What's a key qualitative method?",
         options: [
-          "Compare story points before and after AI adoption",
-          "Track actual time to complete similar tasks",
-          "Monitor team confidence in estimates",
-          "Measure features delivered per sprint"
+          "Code quality automated analysis",
+          "Developer surveys sent through Slack/Teams",
+          "Automated PR review comments",
+          "API data from AI tool providers"
         ],
         correctAnswer: 1,
-        category: "Sprint Analytics",
-        difficulty: "medium",
-        points: 10
-      },
-      {
-        id: "em-011",
-        question: "What's the biggest challenge engineering managers face with AI tool adoption?",
-        options: [
-          "Getting budget approval for new tools",
-          "Training developers on how to use AI effectively",
-          "Measuring actual productivity improvement vs. perceived benefits",
-          "Integrating AI tools with existing development workflows"
-        ],
-        correctAnswer: 2,
-        category: "Management Challenges",
+        category: "Data Collection",
         difficulty: "easy",
         points: 5
       },
       {
-        id: "em-012",
-        question: "Which metric best indicates healthy AI tool adoption across your engineering team?",
+        id: "lb-011",
+        question: "When presenting AI effectiveness to leadership, LinearB recommends focusing on:",
         options: [
-          "100% of developers have the tool installed",
-          "AI-generated code makes up 40%+ of commits",
-          "Consistent usage patterns across all experience levels",
-          "Zero reported issues with AI-generated code"
+          "Time saved metrics and cost reduction spreadsheets",
+          "Product momentum through features and quality",
+          "Developer satisfaction scores and retention rates",
+          "Technical metrics like code coverage and complexity"
         ],
-        correctAnswer: 2,
-        category: "Adoption Health",
+        correctAnswer: 1,
+        category: "Leadership Communication",
         difficulty: "medium",
         points: 10
+      },
+      {
+        id: "lb-012",
+        question: "According to LinearB, what characterizes the difference between junior and senior developer AI usage?",
+        options: [
+          "Seniors use more advanced AI tools than juniors",
+          "Juniors iterate on outputs, seniors iterate on inputs",
+          "Seniors are more skeptical of AI assistance",
+          "Juniors generate more lines of code with AI"
+        ],
+        correctAnswer: 1,
+        category: "Developer Maturity",
+        difficulty: "hard",
+        points: 15
+      }
+    ];
+  }
+
+  private async getDefaultQuestions(): Promise<Question[]> {
+    // Minimal fallback questions
+    return [
+      {
+        id: "fallback-001",
+        question: "What is the primary goal of measuring AI effectiveness in engineering teams?",
+        options: [
+          "To justify the cost of AI tools",
+          "To understand if teams are shipping more value with fewer mistakes",
+          "To compare different AI tools",
+          "To track developer productivity"
+        ],
+        correctAnswer: 1,
+        category: "Basic Concepts",
+        difficulty: "easy",
+        points: 5
       }
     ];
   }
@@ -370,25 +388,31 @@ export default class QuizGameServer implements Party.Server {
 
   private handlePlayerLeave(playerId: string) {
     if (this.gameState.players.has(playerId)) {
-      // Only remove player from active players if game is not finished
-      if (this.gameState.phase !== "finished") {
-        this.gameState.players.delete(playerId);
-        this.gameState.answers.delete(playerId);
+      // Remove player from game
+      this.gameState.players.delete(playerId);
+      this.gameState.answers.delete(playerId);
 
-        this.broadcast({
-          type: "player_left",
-          playerId
-        });
+      this.broadcast({
+        type: "player_left",
+        playerId
+      });
 
-        this.sendLeaderboard();
+      // Check if no players left - reset game to lobby
+      if (this.gameState.players.size === 0) {
+        console.log("All players left, resetting game to lobby");
+        this.resetGameToLobby();
       } else {
-        // Game is finished, just remove from active connections but keep in final rankings
-        this.gameState.players.delete(playerId);
-        this.broadcast({
-          type: "player_left",
-          playerId
-        });
-        // Don't recalculate leaderboard - keep frozen rankings
+        this.sendLeaderboard();
+        
+        // If we're in a question phase and all remaining players have answered, end question
+        if (this.gameState.phase === "question" && this.gameState.currentQuestion) {
+          const activePlayers = Array.from(this.gameState.players.values());
+          const answeredCount = this.gameState.answers.size;
+          
+          if (activePlayers.length > 0 && answeredCount === activePlayers.length) {
+            this.endCurrentQuestion();
+          }
+        }
       }
     }
   }
@@ -537,6 +561,29 @@ export default class QuizGameServer implements Party.Server {
     });
 
     this.sendLeaderboard();
+  }
+
+  private resetGameToLobby() {
+    // Clear any running question timer
+    if (this.questionTimer) {
+      clearTimeout(this.questionTimer);
+      this.questionTimer = undefined;
+    }
+
+    // Reset game state to initial lobby state
+    this.gameState = {
+      phase: "lobby",
+      players: new Map(),
+      questionIndex: 0,
+      questionDuration: 15000, // 15 seconds per question
+      questions: this.gameState.questions, // Keep the loaded questions
+      answers: new Map(),
+      finalRankings: undefined,
+      currentQuestion: undefined,
+      questionStartTime: undefined
+    };
+
+    console.log("Game reset to lobby - ready for new players");
   }
 
   private sendLeaderboard() {
