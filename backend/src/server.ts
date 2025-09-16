@@ -7,6 +7,7 @@ interface Player {
   score: number;
   currentAnswer?: string;
   joinedAt: number;
+  isHost?: boolean;
 }
 
 interface Question {
@@ -38,7 +39,8 @@ type ClientMessage =
   | { type: "emoji"; emoji: string }
   | { type: "cursor"; x: number; y: number }
   | { type: "start_game" }
-  | { type: "next_question" };
+  | { type: "next_question" }
+  | { type: "reset_game" };
 
 type ServerMessage =
   | { type: "game_state"; state: Partial<GameState> }
@@ -115,6 +117,10 @@ export default class QuizGameServer implements Party.Server {
           
         case "next_question":
           this.nextQuestion();
+          break;
+          
+        case "reset_game":
+          this.handleGameReset(sender.id);
           break;
           
         default:
@@ -367,11 +373,15 @@ export default class QuizGameServer implements Party.Server {
   }
 
   private handlePlayerJoin(connection: Party.Connection, name: string) {
+    const trimmedName = name.trim();
+    const isHost = trimmedName === 'AZ';
+    
     const player: Player = {
       id: connection.id,
-      name: name.trim(),
+      name: trimmedName,
       score: 0,
-      joinedAt: Date.now()
+      joinedAt: Date.now(),
+      isHost
     };
 
     this.gameState.players.set(connection.id, player);
@@ -561,6 +571,30 @@ export default class QuizGameServer implements Party.Server {
     });
 
     this.sendLeaderboard();
+  }
+
+  private handleGameReset(playerId: string) {
+    const player = this.gameState.players.get(playerId);
+    
+    // Only allow hosts to reset the game
+    if (!player || !player.isHost) {
+      console.log(`Non-host player ${playerId} attempted to reset game`);
+      return;
+    }
+    
+    console.log(`Host ${player.name} is resetting the game`);
+    this.resetGameToLobby();
+    
+    // Broadcast game reset to all connected players
+    this.broadcast({
+      type: "game_state",
+      state: {
+        phase: "lobby",
+        players: [],
+        questionIndex: 0,
+        questionDuration: 15000
+      }
+    });
   }
 
   private resetGameToLobby() {

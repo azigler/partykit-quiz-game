@@ -8,6 +8,7 @@ export interface Player {
   score: number;
   currentAnswer?: string;
   joinedAt: number;
+  isHost?: boolean;
 }
 
 export interface Question {
@@ -47,6 +48,7 @@ export const gameState = writable<GameState>({
   questionIndex: 0,
   questionDuration: 15000
 });
+export const gameWasReset = writable(false);
 
 export const cursors = writable<Map<string, { x: number; y: number }>>(new Map());
 export const recentEmojis = writable<Array<{ playerId: string; emoji: string; timestamp: number }>>([]);
@@ -63,8 +65,8 @@ export const sortedPlayers = derived(gameState, ($gameState) =>
   [...$gameState.players].sort((a, b) => b.score - a.score)
 );
 
-export const isGameHost = derived([currentPlayer, gameState], ([$currentPlayer, $gameState]) => 
-  $currentPlayer && $gameState.players[0]?.id === $currentPlayer.id
+export const isGameHost = derived([currentPlayer], ([$currentPlayer]) => 
+  $currentPlayer && $currentPlayer.isHost === true
 );
 
 // Connection management
@@ -173,6 +175,13 @@ export const gameActions = {
       x,
       y
     }));
+  },
+
+  resetGame() {
+    if (!socket) return;
+    socket.send(JSON.stringify({
+      type: 'reset_game'
+    }));
   }
 };
 
@@ -185,6 +194,24 @@ function handleServerMessage(message: ServerMessage) {
       })();
       
       gameState.update(state => ({ ...state, ...message.state }));
+      
+      // Handle game reset - if we receive a lobby state with empty players, it's a reset
+      if (message.state.phase === 'lobby' && message.state.players && message.state.players.length === 0) {
+        console.log('Game was reset by host - clearing local state');
+        // Clear local player state so user needs to rejoin
+        myPlayerId = null;
+        myPlayerName = null;
+        currentPlayer.set(null);
+        finalRankings.set([]);
+        questionResults.set(null);
+        timeRemaining.set(0);
+        if (questionTimer) {
+          clearInterval(questionTimer);
+          questionTimer = null;
+        }
+        // Signal that the game was reset by host
+        gameWasReset.set(true);
+      }
       
       // Freeze rankings when game transitions to finished
       if (message.state.phase === 'finished' && !wasFinished) {

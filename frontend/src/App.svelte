@@ -1,13 +1,21 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { connected, currentPlayer, gameState, gameActions } from './lib/stores/game';
+  import { connected, currentPlayer, gameState, gameActions, gameWasReset } from './lib/stores/game';
   import LobbyScreen from './lib/components/LobbyScreen.svelte';
   import GameScreen from './lib/components/GameScreen.svelte';
   import CursorTracker from './lib/components/CursorTracker.svelte';
   import EmojiOverlay from './lib/components/EmojiOverlay.svelte';
+  import HostControls from './lib/components/HostControls.svelte';
 
   let playerName = '';
   let hasJoined = false;
+  
+  // Reset hasJoined only when game is reset by host
+  $: if ($gameWasReset) {
+    hasJoined = false;
+    playerName = ''; // Clear the name field so they can enter a new name
+    gameWasReset.set(false); // Reset the flag
+  }
 
   onMount(() => {
     gameActions.connect();
@@ -70,6 +78,7 @@
     <!-- Overlays -->
     <CursorTracker />
     <EmojiOverlay />
+    <HostControls />
   {/if}
 </main>
 

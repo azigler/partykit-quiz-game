@@ -17,7 +17,7 @@
       <div class="players-list">
         {#each $sortedPlayers as player, index}
           <div class="player-card">
-            <div class="player-avatar" class:host-avatar={index === 0}>
+            <div class="player-avatar" class:host-avatar={player.isHost}>
               {player.name.charAt(0).toUpperCase()}
             </div>
             <div class="player-info">
@@ -26,7 +26,7 @@
                 {#if $currentPlayer && player.id === $currentPlayer.id}
                   <span class="you-badge">👤 You</span>
                 {/if}
-                {#if index === 0}
+                {#if player.isHost}
                   <span class="host-badge">👑 Host</span>
                 {/if}
               </div>
